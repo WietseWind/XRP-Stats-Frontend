@@ -11,7 +11,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
     "vue": "^2.5.2",
+    "vue-localforage": "^0.2.5",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -58,6 +61,7 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
+    "vueisotope": "^3.1.1",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",

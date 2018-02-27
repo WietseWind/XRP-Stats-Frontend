@@ -6,13 +6,13 @@
           XRP Stats
         </router-link>
         <nav class="my-2 my-md-0 mr-md-3">
-          <router-link to="/rich-index" class="p-2 routerlink" active-class="btn btn-outline-primary">Your Richlist Index</router-link>
+          <router-link to="/rich-index" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Your Richlist Index</router-link>
         </nav>
         <nav class="my-2 my-md-0 mr-md-3">
-          <router-link to="/rich-stats" class="p-2 routerlink" active-class="btn btn-outline-primary">Richlist stats</router-link>
+          <router-link to="/rich-stats" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Richlist stats</router-link>
         </nav>
         <nav class="my-2 my-md-0 mr-md-3">
-          <router-link to="/escrow-stats" class="p-2 routerlink" active-class="btn btn-outline-primary">Escrow stats</router-link>
+          <router-link to="/escrow-stats" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Escrow stats</router-link>
         </nav>
       </div>
       <div class="container">

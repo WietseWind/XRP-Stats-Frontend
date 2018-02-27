@@ -2,14 +2,14 @@
   <div class="hello">
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h1 class="display-4">Your Richlist Index</h1>
-      <p class="lead">Updates every ~ 10 minutes</p>
+      <p class="lead text-muted">Ledger data updates every ~ 10 minutes</p>
     </div>
 
     <div class="container">
       <div class="input-group mb-3">
-        <input :disabled="requesting" v-on:keydown.enter="check" type="text" class="form-control form-control-lg" placeholder="Enter your account (wallet address), rXXXXXX...." v-model="account">
+        <input :disabled="requesting" v-on:keydown.enter="pushRoute" type="text" class="form-control form-control-lg" placeholder="Enter your account (wallet address), rXXXXXX...." v-model="account">
         <div class="input-group-append">
-          <button :disabled="requesting" @click="check" class="btn btn-warning" type="button">Check</button>
+          <button :disabled="requesting" @click="pushRoute" class="btn btn-warning" type="button">Check</button>
         </div>
       </div>
       <div class="progress-loading" v-if="requesting && progress > 0">
@@ -22,17 +22,48 @@
         {{ error }}
       </div>
       <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
+        <div class="progress" style="height: 25px;">
+          <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.round(results.gt.percentage * 100) }}&percnt;</b></div>
+          <div class="progress-bar text-center bg-warning" role="progressbar" style="width: 0%">
+            <div id="progress-me"></div>
+          </div>
+          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.round(results.lt.percentage * 100) }}&percnt;</b></div>
+        </div>
+        <br />
         <h1>You are <b>#{{ results.gt.count + 1 }}</b> 🎉</h1>
         There are <b>{{ results.gt.count }}</b> account(s) with more XRP<span v-if="results.eq.count > 1">,
           <b>{{ results.eq.count - 1 }}</b> account(s) with the exact same amount of XRP</span>
         and
         <b>{{ results.lt.count }}</b> account(s) with less XRP.
+        <br />
+        <span class="text-muted">
+          <small>
+            &dash;
+            Results from: <b>{{ m(results.account.__lastUpdate) }}</b>
+          </small>
+        </span>
+      </div>
+      <div v-if="history.length > 1" class="text-center text-muted">
+        <h6>History</h6>
+        <ul class="list-unstyled text-center">
+          <a class="media" @click="account = h; pushRoute()" v-for="h in history" v-bind:key="h" v-if="h !== account">
+            <small>{{ h }}</small>
+          </a>
+        </ul>
+        <br />&nbsp;
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import VueLocalForage from 'vue-localforage'
+const moment = require('moment')
+const timezone = require('moment-timezone')
+
+Vue.use(VueLocalForage)
+
 export default {
   name: 'RichListIndex',
   props: [ 'address' ],
@@ -42,7 +73,8 @@ export default {
       requesting: false,
       results: {},
       error: '',
-      progress: 0
+      progress: 0,
+      history: []
     }
   },
   mounted () {
@@ -51,6 +83,15 @@ export default {
       this.progress = 0
       this.check()
     }
+    this.$getItem('history').then((r) => {
+      if (typeof r !== 'undefined' && r !== null && r.length > 0) {
+        r.forEach((d) => {
+          if (typeof d === 'string' && d.match(/^r/)) {
+            this.history.unshift(d)
+          }
+        })
+      }
+    })
   },
   watch: {
     '$route.params.address': function (r) {
@@ -65,6 +106,15 @@ export default {
     }
   },
   methods: {
+    m (m) {
+      var d = timezone(m)
+      return d.tz(moment.tz.guess()).fromNow()
+    },
+    pushRoute () {
+      if (this.account.trim()) {
+        this.$router.push({ path: '/rich-index/' + this.account, params: { address: this.account } })
+      }
+    },
     check () {
       var interval
       var that = this
@@ -89,11 +139,25 @@ export default {
               clearInterval(interval)
             }
           }, 50)
-          that.$router.push({ path: '/rich-index/' + that.account, params: { address: that.account } })
           console.log(r)
           donereq()
           if (r.error) {
             that.error = r.message
+          } else {
+            that.$getItem('history').then((r) => {
+              var existing = []
+              if (r !== null) {
+                existing = r
+              }
+              if (existing.indexOf(that.account) < 0) {
+                existing.unshift(that.account)
+                if (existing.length > 10) {
+                  existing = existing.slice(0, 10)
+                }
+                that.history = existing
+                that.$setItem('history', existing)
+              }
+            })
           }
           that.results = r
         }).catch((e) => {
@@ -110,4 +174,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  a {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline !important;
+    }
+    &.media {
+      small {
+        margin: 0 auto 0 auto;
+      }
+    }
+  }
+  #progress-me {
+    position: absolute;
+    &::before {
+      content: '😎';
+      font-size: 3.3em;
+      line-height: 2.9em;
+      margin-left: -11px;
+    }
+  }
 </style>
