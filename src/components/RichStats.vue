@@ -46,14 +46,14 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col" class="text-right" width="120">&percnt; Accounts</th>
-            <th scope="col" class="text-right" width="200">Balance &gt;=</th>
+            <th scope="col" class="text-right" width="300">Balance &gt;=</th>
             <th scope="col" class="text-right"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(v, k) in data.pct" v-bind:key="k">
             <th scope="row" class="text-right">{{ k.substring(3) }} &percnt;</th>
-            <td class="text-right text-primary"><b>{{ v.toLocaleString(undefined) }}</b> XRP</td>
+            <td class="text-right text-primary"><b>{{ v.toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 }) }}</b> XRP</td>
             <td class="text-right"></td>
           </tr>
         </tbody>
