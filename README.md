@@ -1,6 +1,8 @@
-# xrp-ledger-stats
+# XRP Ledger Stats Frontend
 
-> XRP Ledger Stats: https://xrpstats.xrptipbot.com
+Live at: https://xrpstats.xrptipbot.com
+
+Backend at: https://github.com/WietseWind/XRP-Ledger-to-MongoDB
 
 ## Build Setup
 
