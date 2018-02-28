@@ -6,6 +6,10 @@
       <p v-if="data.datamoment" class="lead text-muted">Last update: {{ m(data.datamoment) }}</p>
     </div>
 
+    <p class="text-center text-warning">
+      <b>The numbers on this page are <u>not</u> taking escrowed XRP into account.</b>
+    </p>
+
     <p v-if="Object.keys(data).length === 0" class="alert alert-primary text-center">Loading stats...</p>
 
     <div v-if="Object.keys(data).length > 0">
@@ -40,6 +44,16 @@
             <td class="text-primary text-right"><b>{{ l.balance }}</b> XRP</td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row" class="text-right">
+              {{ noAccountsASum }}
+            </th>
+            <th scope="row" class="text-right" colspan="100">
+              {{ noAccountsSum }} XRP
+            </th>
+          </tr>
+        </tfoot>
       </table>
 
       <table v-if="location.hash === '#percentage'" class="table table-hover table-sm table-striped">
@@ -94,6 +108,20 @@ export default {
         prevStart = parseInt(k.substring(3)) - 1
         return r
       })
+    },
+    noAccountsSum () {
+      return Math.round(Object.keys(this.data.has).map((r) => {
+        return this.data.has[r].balanceSum
+      }).reduce((a, b) => {
+        return a + b
+      }, 0)).toLocaleString(undefined)
+    },
+    noAccountsASum () {
+      return Math.round(Object.keys(this.data.has).map((r) => {
+        return this.data.has[r].accounts
+      }).reduce((a, b) => {
+        return a + b
+      }, 0)).toLocaleString(undefined)
     }
   },
   methods: {

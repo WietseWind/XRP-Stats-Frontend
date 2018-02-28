@@ -30,16 +30,20 @@
           <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.round(results.lt.percentage * 100) }}&percnt;</b></div>
         </div>
         <br />
-        <h1>You are <b>#{{ results.gt.count + 1 }}</b> 🎉</h1>
+        <h1>
+          <span v-if="results.accounts.length > 0">You are</span>
+          <span v-if="results.accounts.length < 1">{{ parseInt(results.query).toLocaleString(undefined) }} XRP is </span>
+          <b>#{{ results.gt.count + 1 }}</b> 🎉
+        </h1>
         There are <b>{{ results.gt.count }}</b> account(s) with more XRP<span v-if="results.eq.count > 1">,
           <b>{{ results.eq.count - 1 }}</b> account(s) with the exact same amount of XRP</span>
         and
         <b>{{ results.lt.count }}</b> account(s) with less XRP.
         <br />
-        <span class="text-muted">
+        <span class="text-muted" v-if="results.accounts.length > 0">
           <small>
             &dash;
-            Results from: <b>{{ m(results.account.__lastUpdate) }}</b>
+            Results from: <b>{{ m(results.accounts[0].__lastUpdate) }}</b>
           </small>
         </span>
       </div>
@@ -127,7 +131,7 @@ export default {
           that.progress = 0
         }, 1000)
       }
-      if (this.account.trim().match(/^r[a-zA-Z0-9]{10,}$/)) {
+      if (this.account.trim().match(/^r[a-zA-Z0-9, ]{10,}$/) || this.account.trim().match(/^[0-9]+$/)) {
         this.requesting = true
         window.fetch('https://xrpstats.xrptipbot.com/api/richlist-index/' + this.account).then((r) => {
           return r.json()
@@ -166,7 +170,7 @@ export default {
         })
       } else {
         // not ok
-        that.error = 'Invalid wallet address'
+        that.error = 'Invalid value, please enter one or more wallet addresses or an amount (only integers)'
       }
     }
   }
