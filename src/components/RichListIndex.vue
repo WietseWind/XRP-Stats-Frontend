@@ -28,10 +28,10 @@
       <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
         <div class="progress" style="height: 25px;">
           <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.round(results.gt.percentage * 100) }}&percnt;</b></div>
-          <div class="progress-bar text-center bg-warning" role="progressbar" style="width: 0%">
+          <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + ((1 - results.gt.percentage - results.lt.percentage) * 100) + '%'">
             <div id="progress-me"></div>
           </div>
-          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.round(results.lt.percentage * 100) }}&percnt;</b></div>
+          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.round(results.lt.percentage * 100) }}&percnt;</b></div>
         </div>
         <br />
         <h1>
@@ -193,13 +193,21 @@ export default {
       }
     }
   }
+  .progress-overflow { overflow: visible; }
   #progress-me {
-    position: absolute;
-    &::before {
+    width: 12px;
+    height: 12px;
+    margin: 0 auto 0 auto;
+    display: inline-block;
+    overflow: visible;
+    &::after {
+      display: block;
+      position: absolute;
       content: '😎';
+      margin-top: -1.25em;
+      margin-left: -0.3em;
       font-size: 3.3em;
       line-height: 2.9em;
-      margin-left: -11px;
     }
   }
 </style>
