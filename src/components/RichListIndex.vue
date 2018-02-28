@@ -55,7 +55,7 @@
         </span>
         <br />
       </div>
-      <div v-if="history.length > 1" class="text-center text-muted">
+      <div v-if="history.length > 0 && !(history.length === 1 && history[0] === account)" class="text-center text-muted">
         <h6>History</h6>
         <ul class="list-unstyled text-center">
           <a class="media" @click="account = h; pushRoute()" v-for="h in history" v-bind:key="h" v-if="h !== account">
