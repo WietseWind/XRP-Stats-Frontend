@@ -5,6 +5,10 @@
       <p class="lead text-muted">Ledger data updates every ~ 10 minutes</p>
     </div>
 
+    <p class="text-warning text-center">
+      <b>Enter an wallet address, multiple addresses (space separated) or an amount (just the digits)</b>
+    </p>
+
     <div class="container">
       <div class="input-group mb-3">
         <input :disabled="requesting" v-on:keydown.enter="pushRoute" type="text" class="form-control form-control-lg" placeholder="Enter your account (wallet address), rXXXXXX...." v-model="account">
