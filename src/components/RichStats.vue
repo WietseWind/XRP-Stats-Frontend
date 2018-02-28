@@ -34,14 +34,22 @@
         </thead>
         <tbody>
           <tr v-for="l in top" v-bind:key="l.i">
-            <th scope="row" class="text-right">{{ l.accounts }}</th>
+            <th scope="row" class="text-right">
+              <router-link v-if="l.accounts < 999" :to="'/rich-stats/' + l.accounts" class="">{{ l.accounts }}</router-link>
+              <span v-if="l.accounts >= 999">{{ l.accounts }}</span>
+            </th>
             <td class="text-right">{{ l.from }} XRP</td>
             <td></td>
             <td>
               <span v-if="l.i < 1">∞</span>
-              <span v-if="l.i > 0">{{ l.to }} XRP</span>
+              <span v-if="l.i > 0">
+                {{ l.to }} XRP
+              </span>
             </td>
-            <td class="text-primary text-right"><b>{{ l.balance }}</b> XRP</td>
+            <td class="text-primary text-right">
+              <router-link v-if="l.accounts < 999" :to="'/rich-stats/' + l.accounts" class=""><b>{{ l.balance }}</b> XRP</router-link>
+              <span v-if="l.accounts >= 999"><b>{{ l.balance }}</b> XRP</span>
+            </td>
           </tr>
         </tbody>
         <tfoot>

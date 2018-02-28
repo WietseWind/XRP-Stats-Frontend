@@ -7,7 +7,7 @@
     </div>
 
     <p v-if="Object.keys(data).length === 0" class="alert alert-primary text-center">Loading stats...</p>
-    
+
     <div v-if="Object.keys(data).length > 0">
       <p class="text-center text-warning">
         <b>Wallet {{ (parseInt(skip)||0) + 1 }} - {{ (parseInt(take)||10) + (parseInt(skip)||0) }}</b>
@@ -63,7 +63,7 @@ export default {
 <style lang="scss" scoped>
   .text-black { color: #000 }
   .text-normal { font-weight: normal }
-  .underline { 
+  .underline {
     &:hover {
       text-decoration: underline;
     }
