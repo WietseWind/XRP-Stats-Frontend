@@ -25,6 +25,9 @@
       <div v-if="error !== ''" class="alert alert-danger text-center">
         {{ error }}
       </div>
+      <div class="alert alert-danger text-center" v-if="results.accounts.length > 0 && !requesting">
+        Please don't flaunt your position as it makes you a possible taget for poeple with ill intentions!
+      </div>
       <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
         <div class="progress" style="height: 25px;">
           <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.round(results.gt.percentage * 100) }}&percnt;</b></div>
@@ -50,6 +53,7 @@
             Results from: <b>{{ m(results.accounts[0].__lastUpdate) }}</b>
           </small>
         </span>
+        <br />
       </div>
       <div v-if="history.length > 1" class="text-center text-muted">
         <h6>History</h6>
