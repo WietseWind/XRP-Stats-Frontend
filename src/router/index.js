@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import RichListIndex from '@/components/RichListIndex'
 import RichStats from '@/components/RichStats'
+import RichWallets from '@/components/RichWallets'
 import EscrowStats from '@/components/EscrowStats'
 
 Vue.use(Router)
@@ -30,6 +31,11 @@ export default new Router({
       path: '/rich-stats',
       name: 'RichStats',
       component: RichStats
+    },
+    {
+      path: '/rich-stats/:take/:skip?',
+      props: true,
+      component: RichWallets
     },
     {
       path: '/escrow-stats',
