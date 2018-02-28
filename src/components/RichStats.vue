@@ -66,7 +66,7 @@
         </thead>
         <tbody>
           <tr v-for="(v, k) in data.pct" v-bind:key="k">
-            <th scope="row" class="text-right">{{ k.substring(3) }} &percnt;</th>
+            <th scope="row" class="text-right">{{ parseFloat(k.substring(3).replace('p', '.')).toLocaleString(undefined) }} &percnt;</th>
             <td class="text-right text-primary"><b>{{ v.toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 }) }}</b> XRP</td>
             <td class="text-right"></td>
           </tr>
