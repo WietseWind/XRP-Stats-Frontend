@@ -157,7 +157,7 @@ export default {
               if (r !== null) {
                 existing = r
               }
-              if (existing.indexOf(that.account) < 0) {
+              if (existing.indexOf(that.account) < 0 && that.account.trim().match(/^r/)) {
                 existing.unshift(that.account)
                 if (existing.length > 10) {
                   existing = existing.slice(0, 10)
