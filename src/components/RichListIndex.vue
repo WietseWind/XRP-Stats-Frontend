@@ -26,7 +26,7 @@
         {{ error }}
       </div>
       <div class="alert alert-danger text-center" v-if="!requesting && results.gt && results.accounts.length > 0">
-        Please don't flaunt your position as it makes you a possible taget for poeple with ill intentions!
+        Please don't flaunt your position as it makes you a possible target for people with ill intentions!
       </div>
       <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
         <div class="progress" style="height: 25px;">
