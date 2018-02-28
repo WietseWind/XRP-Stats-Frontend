@@ -141,7 +141,7 @@ export default {
       }
       if (this.account.trim().match(/^r[a-zA-Z0-9, ]{10,}$/) || this.account.trim().match(/^[0-9]+$/)) {
         this.requesting = true
-        window.fetch('https://xrpstats.xrptipbot.com/api/richlist-index/' + this.account).then((r) => {
+        window.fetch('https://ledger.exposed/api/richlist-index/' + this.account).then((r) => {
           return r.json()
         }).then((r) => {
           interval = setInterval(() => {

@@ -94,7 +94,7 @@ export default {
     }
   },
   mounted () {
-    window.fetch('https://xrpstats.xrptipbot.com/api/escrowlist').then((r) => {
+    window.fetch('https://ledger.exposed/api/escrowlist').then((r) => {
       return r.json()
     }).then((r) => {
       // this.data = r

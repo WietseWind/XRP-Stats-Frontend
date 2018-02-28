@@ -143,7 +143,7 @@ export default {
     if (this.location.hash === '') {
       this.location.hash = '#range'
     }
-    window.fetch('https://xrpstats.xrptipbot.com/api/richlist').then((r) => {
+    window.fetch('https://ledger.exposed/api/richlist').then((r) => {
       return r.json()
     }).then((r) => {
       this.data = r
