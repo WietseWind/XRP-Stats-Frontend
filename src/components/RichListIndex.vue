@@ -30,11 +30,11 @@
       </div>
       <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
         <div class="progress" style="height: 25px;">
-          <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.floor(results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.floor(results.gt.percentage * 100) }}&percnt;&nbsp;&nbsp;</b></div>
+          <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 92%; min-width: 8%;" :style="'width: ' + Math.ceil(results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.ceil(results.gt.percentage * 100) }}&percnt;&nbsp;&nbsp;</b></div>
           <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + Math.floor((1 - results.gt.percentage - results.lt.percentage) * 100) + '%'">
             <div id="progress-me"></div>
           </div>
-          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.ceil(results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.ceil(results.lt.percentage * 100) }}&percnt;</b></div>
+          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 92%; min-width: 8%;" :style="'width: ' + Math.floor(results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.floor(results.lt.percentage * 100) }}&percnt;</b></div>
         </div>
         <br />
         <h1>
