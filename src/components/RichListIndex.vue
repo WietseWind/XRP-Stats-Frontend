@@ -50,11 +50,11 @@
         <hr />
         <!-- When looking at the total amount of XRP in account: -->
         <!-- <br /> -->
-        <b>{{ results.gt.amount.toLocaleString(undefined) }} XRP</b> 
+        <b>{{ results.gt.amount.toLocaleString(undefined) }} XRP</b>
         <small class="text-primary">({{ parseFloat((results.gt.amountpct * 100).toFixed(6)).toLocaleString(undefined) }}&percnt;)</small>
         is in accounts
-        with <u>more</u> XRP and<br /> 
-        <b>{{ results.lt.amount.toLocaleString(undefined) }} XRP</b> 
+        with <u>more</u> XRP and<br />
+        <b>{{ results.lt.amount.toLocaleString(undefined) }} XRP</b>
         <small class="text-primary">({{ parseFloat((results.lt.amountpct * 100).toFixed(6)).toLocaleString(undefined) }}&percnt;)</small>
         is in accounts with <u>less</u> XRP.
         <br />
