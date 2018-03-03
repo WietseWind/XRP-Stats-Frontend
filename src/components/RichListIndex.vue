@@ -48,16 +48,22 @@
         <b>{{ results.lt.count }}</b> account(s) with <u>less</u> XRP.
         <br />
         <hr />
-        When looking at the total amount of XRP in account:
-        <br /><b>{{ results.gt.amount.toLocaleString(undefined) }} XRP</b> is in accounts
-        with <u>more</u> XRP and <b>{{ results.lt.amount.toLocaleString(undefined) }} XRP</b> is in accounts with <u>less</u> XRP.
+        <!-- When looking at the total amount of XRP in account: -->
+        <!-- <br /> -->
+        <b>{{ results.gt.amount.toLocaleString(undefined) }} XRP</b> 
+        <small class="text-primary">({{ parseFloat((results.gt.amountpct * 100).toFixed(6)).toLocaleString(undefined) }}&percnt;)</small>
+        is in accounts
+        with <u>more</u> XRP and<br /> 
+        <b>{{ results.lt.amount.toLocaleString(undefined) }} XRP</b> 
+        <small class="text-primary">({{ parseFloat((results.lt.amountpct * 100).toFixed(6)).toLocaleString(undefined) }}&percnt;)</small>
+        is in accounts with <u>less</u> XRP.
         <br />
         <div class="progress" style="height: 17px; margin-top: 10px; margin-bottom: 12px;">
-          <div class="progress-bar bg-secondary text-center" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.floor(results.gt.amountpct * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.floor(results.gt.amountpct * 100) }}&percnt;&nbsp;&nbsp;</b></div>
+          <div class="progress-bar bg-dark text-center" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.floor(results.gt.amountpct * 100) + '%'"><b class="d-none d-sm-block">{{ parseFloat((results.gt.amountpct * 100).toFixed(6)).toLocaleString(undefined) }}&percnt;&nbsp;&nbsp;</b></div>
           <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + Math.floor((1 - results.gt.amountpct - results.lt.amountpct) * 100) + '%'">
             <!-- <div id="progress-me"></div> -->
           </div>
-          <div class="progress-bar text-center bg-dark" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.ceil(results.lt.amountpct * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.ceil(results.lt.amountpct * 100) }}&percnt;</b></div>
+          <div class="progress-bar text-center bg-secondary" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.ceil(results.lt.amountpct * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;{{ parseFloat((results.lt.amountpct * 100).toFixed(6)).toLocaleString(undefined) }}&percnt;</b></div>
         </div>
         <span class="text-muted" v-if="results.accounts.length > 0">
           <small>
