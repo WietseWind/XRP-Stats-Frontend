@@ -6,7 +6,7 @@
     </div>
 
     <p class="text-warning text-center">
-      <b>Enter an wallet address, multiple addresses (space separated) or an amount (just the digits)</b>
+      <b>Enter a wallet address, multiple addresses (space separated) or an amount (just the digits)</b>
     </p>
 
     <div class="container">
