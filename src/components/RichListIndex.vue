@@ -30,11 +30,11 @@
       </div>
       <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
         <div class="progress" style="height: 25px;">
-          <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.round(results.gt.percentage * 100) }}&percnt;</b></div>
-          <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + ((1 - results.gt.percentage - results.lt.percentage) * 100) + '%'">
+          <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.floor(results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.floor(results.gt.percentage * 100) }}&percnt;&nbsp;&nbsp;</b></div>
+          <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + Math.floor((1 - results.gt.percentage - results.lt.percentage) * 100) + '%'">
             <div id="progress-me"></div>
           </div>
-          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 94%; min-width: 6%;" :style="'width: ' + (results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.round(results.lt.percentage * 100) }}&percnt;</b></div>
+          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.ceil(results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.ceil(results.lt.percentage * 100) }}&percnt;</b></div>
         </div>
         <br />
         <h1>
@@ -42,18 +42,30 @@
           <span v-if="results.accounts.length < 1">{{ parseInt(results.query).toLocaleString(undefined) }} XRP is </span>
           <b>#{{ results.gt.count + 1 }}</b> 🎉
         </h1>
-        There are <b>{{ results.gt.count }}</b> account(s) with more XRP<span v-if="results.eq.count > 1">,
-          <b>{{ results.eq.count - 1 }}</b> account(s) with the exact same amount of XRP</span>
+        There are <b>{{ results.gt.count }}</b> account(s) with <u>more</u> XRP<span v-if="results.eq.count > 1">,
+          <b>{{ results.eq.count - 1 }}</b> account(s) with the <u>exact same</u> amount of XRP</span>
         and
-        <b>{{ results.lt.count }}</b> account(s) with less XRP.
+        <b>{{ results.lt.count }}</b> account(s) with <u>less</u> XRP.
         <br />
+        <hr />
+        When looking at the total amount of XRP in account:
+        <br /><b>{{ results.gt.amount.toLocaleString(undefined) }} XRP</b> is in accounts
+        with <u>more</u> XRP and <b>{{ results.lt.amount.toLocaleString(undefined) }} XRP</b> is in accounts with <u>less</u> XRP.
+        <br />
+        <div class="progress" style="height: 17px; margin-top: 10px; margin-bottom: 12px;">
+          <div class="progress-bar bg-secondary text-center" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.floor(results.gt.amountpct * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.floor(results.gt.amountpct * 100) }}&percnt;&nbsp;&nbsp;</b></div>
+          <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + Math.floor((1 - results.gt.amountpct - results.lt.amountpct) * 100) + '%'">
+            <!-- <div id="progress-me"></div> -->
+          </div>
+          <div class="progress-bar text-center bg-dark" role="progressbar" style="width: 0%; max-width: 90%; min-width: 10%;" :style="'width: ' + Math.ceil(results.lt.amountpct * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.ceil(results.lt.amountpct * 100) }}&percnt;</b></div>
+        </div>
         <span class="text-muted" v-if="results.accounts.length > 0">
           <small>
             &dash;
             Results from: <b>{{ m(results.accounts[0].__lastUpdate) }}</b>
           </small>
+          <br />
         </span>
-        <br />
       </div>
       <div v-if="history.length > 0 && !(history.length === 1 && history[0] === account)" class="text-center text-muted">
         <h6>History</h6>
@@ -110,7 +122,7 @@ export default {
       this.account = r
       this.progress = 0
       this.results = {}
-      this.requesting = false
+      // this.requesting = false
       this.error = ''
       if (this.account) {
         this.check()
@@ -133,25 +145,24 @@ export default {
       this.results = {}
       this.error = ''
       var donereq = function () {
-        setInterval(() => {
-          clearInterval(interval)
-          that.requesting = false
-          that.progress = 0
-        }, 1000)
+        clearInterval(interval)
+        that.requesting = false
+        that.progress = 0
       }
+      interval = setInterval(() => {
+        if (that.progress < 90) {
+          // that.requesting = true
+          that.progress += 4
+        } else {
+          clearInterval(interval)
+        }
+      }, 200)
       if (this.account.trim().match(/^r[a-zA-Z0-9, ]{10,}$/) || this.account.trim().match(/^[0-9]+$/)) {
         this.requesting = true
         window.fetch('https://ledger.exposed/api/richlist-index/' + this.account).then((r) => {
           return r.json()
         }).then((r) => {
-          interval = setInterval(() => {
-            if (that.progress < 90) {
-              that.progress += 4
-            } else {
-              clearInterval(interval)
-            }
-          }, 50)
-          console.log(r)
+          // console.log(r)
           donereq()
           if (r.error) {
             that.error = r.message
