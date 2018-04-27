@@ -6,6 +6,11 @@
       <p v-if="data.datamoment" class="lead text-muted">Last update: {{ m(data.datamoment) }}</p>
     </div>
 
+    <p class="alert alert-primary text-center" v-if="top100 && data && this.data.has">
+      <b>XRP owned by the top 100 accounts</b>
+      <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - {{ (top100 / noAccountsSum * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</span>
+    </p>
+
     <p class="text-center text-warning">
       <b>The numbers on this page are <u>not</u> taking escrowed XRP into account.</b>
     </p>
@@ -58,7 +63,7 @@
               {{ noAccountsASum }}
             </th>
             <th scope="row" class="text-right" colspan="100">
-              {{ noAccountsSum }} XRP
+              {{ noAccountsSum.toLocaleString(undefined) }} XRP
             </th>
           </tr>
         </tfoot>
@@ -97,6 +102,7 @@ export default {
   data () {
     return {
       data: {},
+      top100: null,
       location: {
         hash: '#range'
       }
@@ -122,7 +128,7 @@ export default {
         return this.data.has[r].balanceSum
       }).reduce((a, b) => {
         return a + b
-      }, 0)).toLocaleString(undefined)
+      }, 0))
     },
     noAccountsASum () {
       return Math.round(Object.keys(this.data.has).map((r) => {
@@ -150,10 +156,26 @@ export default {
     }).catch((e) => {
       console.log(e)
     })
+    window.fetch('https://ledger.exposed/api/wallet-toplist/100/0').then((r) => {
+      return r.json()
+    }).then((r) => {
+      this.top100 = r.map(p => {
+        return p.Balance
+      }).reduce((a, b) => {
+        return a + b
+      }, 0)
+    }).catch((e) => {
+      console.log(e)
+    })
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.bold { font-weight: bold; }
+  .bold { font-weight: bold; }
+  span.large {
+    display: block;
+    font-size: 2em;
+    margin-top: .5em;
+  }
 </style>
