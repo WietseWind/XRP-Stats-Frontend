@@ -6,9 +6,9 @@
       <p v-if="data.datamoment" class="lead text-muted">Last update: {{ m(data.datamoment) }}</p>
     </div>
 
-    <p class="alert alert-primary text-center" v-if="top100 && data && this.data.has">
+    <p class="alert alert-primary text-center" v-if="top100 && data && data.totalCoins">
       <b>XRP owned by the top 100 accounts</b>
-      <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - {{ (top100 / noAccountsSum * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</span>
+      <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - {{ (top100 / (data.totalCoins / 1000000) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</span>
     </p>
 
     <p class="text-center text-warning">
@@ -63,7 +63,8 @@
               {{ noAccountsASum }}
             </th>
             <th scope="row" class="text-right" colspan="100">
-              {{ noAccountsSum.toLocaleString(undefined) }} XRP
+              <span style="font-weight: normal;">In accounts (excl. escrows):</span> <code style="color: black;">{{ noAccountsSum.toLocaleString(undefined) }}</code> XRP<br />
+              <span style="font-weight: normal;">Total coins (ledger):</span> <code style="color: black;">{{ Math.round(data.totalCoins / 1000000).toLocaleString(undefined) }}</code> XRP
             </th>
           </tr>
         </tfoot>
