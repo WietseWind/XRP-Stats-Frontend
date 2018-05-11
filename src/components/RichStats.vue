@@ -6,10 +6,18 @@
       <p v-if="data.datamoment" class="lead text-muted">Last update: {{ m(data.datamoment) }}</p>
     </div>
 
-    <p class="alert alert-primary text-center" v-if="top100 && data && data.totalCoins">
+    <div class="alert alert-primary text-center" v-if="top100 && data && data.totalCoins">
       <b>XRP owned by the top 100 accounts</b>
-      <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - {{ (top100 / (data.totalCoins / 1000000) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</span>
-    </p>
+      <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - <b>{{ (top100 / (top100AllXrp ? (data.totalCoins / 1000000) : noAccountsSum) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</b></span>
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <div @click="top100AllXrp=true" class="btn btn-xs" :class="{ 'btn-primary': top100AllXrp, 'btn-light': !top100AllXrp }">
+          {{ top100AllXrp === true ? '✓' : '' }} Existing XRP
+        </div>
+        <div @click="top100AllXrp=false" class="btn btn-xs" :class="{ 'btn-primary': !top100AllXrp, 'btn-light': top100AllXrp }">
+          {{ top100AllXrp === false ? '✓' : '' }}  Non-escrowed XRP
+        </div>
+      </div>
+    </div>
 
     <p class="text-center text-warning">
       <b>The numbers on this page are <u>not</u> taking escrowed XRP into account.</b>
@@ -104,6 +112,7 @@ export default {
     return {
       data: {},
       top100: null,
+      top100AllXrp: true,
       location: {
         hash: '#range'
       }
