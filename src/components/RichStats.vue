@@ -9,7 +9,9 @@
     <div class="alert alert-primary text-center" v-if="top100 && data && data.totalCoins">
       <b>XRP owned by the top 100 accounts</b>
       <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - <b>{{ (top100 / (top100AllXrp ? (data.totalCoins / 1000000) : noAccountsSum) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</b></span>
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <i>Note: there are multiple <b>exchange wallets</b> (accounts) in the Top 100. These wallets contain the funds of many individual investors. The actual number will be will be <b>significantly lower</b>!</i>
+      <br />
+      <div class="btn-group btn-group-toggle" style="margin-top: 10px;" data-toggle="buttons">
         <div @click="top100AllXrp=true" class="btn btn-xs" :class="{ 'btn-primary': top100AllXrp, 'btn-light': !top100AllXrp }">
           {{ top100AllXrp === true ? '✓' : '' }} Existing XRP
         </div>
@@ -20,7 +22,7 @@
     </div>
 
     <p class="text-center text-warning">
-      <b>The numbers on this page are <u>not</u> taking escrowed XRP into account.</b>
+      <b>The numbers in the tables below are <u>not</u> taking escrowed XRP into account.</b>
     </p>
 
     <p v-if="Object.keys(data).length === 0" class="alert alert-primary text-center">Loading stats...</p>
