@@ -9,7 +9,7 @@
     <div class="alert alert-primary text-center" v-if="top100 && data && data.totalCoins">
       <b>XRP owned by the top 100 accounts</b>
       <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - <b>{{ (top100 / (top100AllXrp ? (data.totalCoins / 1000000) : noAccountsSum) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</b></span>
-      <i>Note: there are multiple <b>exchange wallets</b> (accounts) in the Top 100. These wallets contain the funds of many individual investors. The actual number will be will be <b>significantly lower</b>!</i>
+      <i>Note: there are multiple <b>exchange wallets</b> (accounts) in the Top 100. These wallets contain the funds of many individual investors. The actual number will be <b>significantly lower</b>!</i>
       <br />
       <div class="btn-group btn-group-toggle" style="margin-top: 10px;" data-toggle="buttons">
         <div @click="top100AllXrp=true" class="btn btn-xs" :class="{ 'btn-primary': top100AllXrp, 'btn-light': !top100AllXrp }">
