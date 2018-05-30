@@ -21,8 +21,8 @@
       <small><b>Sort</b></small>
       <div class="btn-group btn-group-sm" role="group">
         <button class="btn" :class="{ 'btn-primary': sort === 'Amount', 'btn-outline-primary': sort !== 'Amount' }" @click="sort='Amount'">Amount</button>
-        <button class="btn" :class="{ 'btn-primary': sort === 'Cancel', 'btn-outline-primary': sort !== 'Cancel' }" @click="sort='Cancel'">CancelAfter</button>
-        <button class="btn" :class="{ 'btn-primary': sort === 'Finish', 'btn-outline-primary': sort !== 'Finish' }" @click="sort='Finish'">FinishAfter</button>
+        <button class="btn" :class="{ 'btn-primary': sort === 'Cancel', 'btn-outline-primary': sort !== 'Cancel' }" @click="sort='Cancel'">Cancel After</button>
+        <button class="btn" :class="{ 'btn-primary': sort === 'Finish', 'btn-outline-primary': sort !== 'Finish' }" @click="sort='Finish'">Finish After</button>
         <button class="btn" :class="{ 'btn-primary': sort === 'Account', 'btn-outline-primary': sort !== 'Account' }" @click="sort='Account'">Account</button>
         <button class="btn" :class="{ 'btn-primary': sort === 'Destination', 'btn-outline-primary': sort !== 'Destination' }" @click="sort='Destination'">Destination</button>
       </div>
@@ -174,5 +174,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+@media (max-width: 768px) {
+  div.btn-group {
+    display: inline-block;
+    button.btn {
+      margin-top: 4px;
+      border-radius: 4px !important;
+      display: inline-block;
+      white-space: wrap;
+    }
+  }
+}
 </style>

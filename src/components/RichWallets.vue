@@ -25,7 +25,10 @@
           <tr v-for="(v, k) in data" v-bind:key="k">
             <td class="text-right"><small class="text-muted">{{ (parseInt(skip)||0) + 1 + k }}</small></td>
             <td class="text-right text-primary"><b>{{ v.Balance.toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 }) }}</b> XRP</td>
-            <th scope="row" class="text-left"><code class="text-black text-normal"><a :href="'https://ripple.com/build/ripple-info-tool/#' + v.Account" class="text-normal text-black underline" target="_blank">{{ v.Account }}</a></code></th>
+            <th scope="row" class="text-left"><code class="text-black text-normal">
+              <router-link :to="'/tx-flow/' + v.Account" class="text-normal text-black underline d-none d-sm-inline-block">{{ v.Account }}</router-link>
+              <a class="text-normal text-black underline d-inline-block d-sm-none" target="_blank">{{ v.Account }}</a>
+            </code></th>
           </tr>
         </tbody>
       </table>

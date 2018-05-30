@@ -5,6 +5,7 @@ import RichListIndex from '@/components/RichListIndex'
 import RichStats from '@/components/RichStats'
 import RichWallets from '@/components/RichWallets'
 import EscrowStats from '@/components/EscrowStats'
+import TxFlow from '@/components/TxFlow'
 
 Vue.use(Router)
 
@@ -20,6 +21,17 @@ export default new Router({
       path: '/rich-index',
       name: 'RichListIndex',
       component: RichListIndex,
+      children: [
+        {
+          path: ':address',
+          props: true
+        }
+      ]
+    },
+    {
+      path: '/tx-flow',
+      name: 'TxFlow',
+      component: TxFlow,
       children: [
         {
           path: ':address',

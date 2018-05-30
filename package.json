@@ -13,9 +13,13 @@
   "dependencies": {
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
+    "rippled-ws-client": "0.0.6",
+    "rippled-ws-client-pool": "0.0.2",
     "vue": "^2.5.2",
+    "vue-google-charts": "0.0.3",
     "vue-localforage": "^0.2.5",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "websocket": "^1.0.26"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -1,18 +1,21 @@
 <template>
   <div id="app">
     <main role="main">
-      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <div class="d-md-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         <router-link tag="h5" class="my-0 mr-md-auto font-weight-normal logo" to="/">
           XRP Stats
         </router-link>
-        <nav class="my-2 my-md-0 mr-md-3">
-          <router-link to="/rich-index" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Your Richlist Index</router-link>
+        <nav class="d-inline-block my-2 my-md-0 mr-md-3">
+          <router-link to="/rich-index" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Richlist Index</router-link>
         </nav>
-        <nav class="my-2 my-md-0 mr-md-3">
-          <router-link to="/rich-stats" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Richlist stats</router-link>
+        <nav class="d-none d-sm-inline-block my-2 my-md-0 mr-md-3">
+          <router-link to="/tx-flow" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Tx Flow</router-link>
         </nav>
-        <nav class="my-2 my-md-0 mr-md-3">
-          <router-link to="/escrow-stats" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Escrow stats</router-link>
+        <nav class="d-inline-block my-2 my-md-0 mr-md-3">
+          <router-link to="/rich-stats" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Richlist Stats</router-link>
+        </nav>
+        <nav class="d-inline-block my-2 my-md-0 mr-md-3">
+          <router-link to="/escrow-stats" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Escrows</router-link>
         </nav>
       </div>
       <div class="container">
@@ -61,6 +64,17 @@ body {
 @media (min-width: 768px) {
   html {
     font-size: 16px;
+  }
+}
+@media (max-width: 768px) {
+  nav.my-2 {
+    // display: inline-block !important;
+    margin: 0px !important;
+    margin-top: 4px !important;
+    a.btn {
+      display: inline-block !important;
+      padding: 3px 6px !important;
+    }
   }
 }
 
