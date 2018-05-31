@@ -20,7 +20,7 @@
       <br />
       <div class="btn-group btn-group-toggle" style="margin-top: 10px;" data-toggle="buttons">
         <div @click="top100AllXrp=false" class="btn btn-xs" :class="{ 'btn-primary': !top100AllXrp, 'btn-light': top100AllXrp }">
-          {{ !top100AllXrp ? '✓' : '' }}  Non-escrowed XRP
+          {{ !top100AllXrp ? '✓' : '' }}  Non-escrowed XRPripple
         </div>
         <div @click="top100AllXrp=true" class="btn btn-xs" :class="{ 'btn-primary': top100AllXrp, 'btn-light': !top100AllXrp }">
           {{ top100AllXrp ? '✓' : '' }} Existing XRP
@@ -98,7 +98,7 @@
         <tbody>
           <tr v-for="(v, k) in data.pct" v-bind:key="k">
             <th scope="row" class="text-right">{{ parseFloat(k.substring(3).replace('p', '.')).toLocaleString(undefined) }} &percnt;</th>
-            <td class="text-right text-primary"><b>{{ v.toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 }) }}</b> XRP</td>
+            <td class="text-right text-primary"><b>{{ v.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> XRP</td>
             <td class="text-right"></td>
           </tr>
         </tbody>
