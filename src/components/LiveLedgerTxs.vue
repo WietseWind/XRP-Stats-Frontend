@@ -50,7 +50,8 @@ export default {
       txs: {},
       types: {},
       poolReady: false,
-      gotTxs: false
+      gotTxs: false,
+      minTxs: 10
     }
   },
   mounted () {
@@ -80,7 +81,7 @@ export default {
   computed: {
     sortedTxs () {
       return Object.keys(this.txs).sort(this.txSorter).filter(t => {
-        return this.txs[t].__count > 10
+        return this.txs[t].__count >= this.minTxs
       })
     }
   },
@@ -106,11 +107,13 @@ export default {
                 this.$set(this.txs, x.Account, [])
                 this.$set(this.txs[x.Account], '__count', 0)
               }
-              if (typeof this.txs[x.Account][x.TransactionType] === 'undefined') {
-                this.$set(this.txs[x.Account], x.TransactionType, 0)
-              }
-              this.txs[x.Account][x.TransactionType]++
               this.txs[x.Account].__count++
+              if (this.txs[x.Account].__count >= this.minTxs) {
+                if (typeof this.txs[x.Account][x.TransactionType] === 'undefined') {
+                  this.$set(this.txs[x.Account], x.TransactionType, 0)
+                }
+                this.txs[x.Account][x.TransactionType]++
+              }
             })
           }
         }).catch(e => {})
