@@ -103,8 +103,14 @@
           </tr>
         </tbody>
       </table>
-
       <!-- <pre v-if="Object.keys(data).length > 0">{{ data }}</pre> -->
+    </div>
+
+    <div class="text-center" v-show="Object.keys(data).length > 0">
+      <div class="text-center donate">
+        <span class="text-muted">Feel like sending a sip my way 🍺?</span><br />
+        <a amount="0.28" size="275" to="WietseWind" network="twitter" href="https://www.xrptipbot.com" target="_blank"></a>
+      </div>
     </div>
 
     <br />&nbsp;
@@ -164,6 +170,13 @@ export default {
     }
   },
   mounted () {
+    let script = document.createElement('script')
+    script.src = 'https://www.xrptipbot.com/static/donate/tipper.js'
+    script.setAttribute('charset', 'utf-8')
+    script.setAttribute('async', 'async')
+    script.setAttribute('deferred', 'deferred')
+    document.querySelector('#app').appendChild(script)
+
     this.location.hash = document.location.hash
     if (this.location.hash === '') {
       this.location.hash = '#range'
@@ -196,5 +209,8 @@ export default {
     display: block;
     font-size: 2em;
     margin-top: .5em;
+  }
+  .donate {
+    margin-top: 50px;
   }
 </style>

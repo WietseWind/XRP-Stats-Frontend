@@ -81,6 +81,12 @@
         </ul>
         <br />&nbsp;
       </div>
+      <div v-show="!requesting && results.gt" class="donate">
+        <div class="text-center donate">
+          <span class="text-muted">Feel like sending a sip my way 🍺?</span><br />
+          <a amount="0.345" size="275" to="WietseWind" network="twitter" href="https://www.xrptipbot.com" target="_blank"></a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -107,6 +113,13 @@ export default {
     }
   },
   mounted () {
+    let script = document.createElement('script')
+    script.src = 'https://www.xrptipbot.com/static/donate/tipper.js'
+    script.setAttribute('charset', 'utf-8')
+    script.setAttribute('async', 'async')
+    script.setAttribute('deferred', 'deferred')
+    document.querySelector('#app').appendChild(script)
+
     if (this.$route.params.address) {
       this.account = this.$route.params.address
       this.progress = 0
@@ -202,6 +215,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .donate {
+    margin-top: 45px;
+  }
   a {
     cursor: pointer;
     &:hover {

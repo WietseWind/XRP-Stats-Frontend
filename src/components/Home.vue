@@ -45,6 +45,10 @@
           Escrows (&lt;1MB): <a href="https://ledger.exposed/download/latest_escrow_data.csv">CSV</a> / <a href="https://ledger.exposed/download/latest_escrow_data.json">JSON</a>
         </small>
       </div>
+      <div class="text-center donate">
+        <span class="text-muted">Feel like sending a sip my way 🍺?</span><br />
+        <a amount="0.5" size="275" to="WietseWind" network="twitter" href="https://www.xrptipbot.com" target="_blank"></a>
+      </div>
     </div>
   </div>
 </template>
@@ -57,9 +61,20 @@ export default {
     }
   },
   methods: {
+  },
+  mounted () {
+    let script = document.createElement('script')
+    script.src = 'https://www.xrptipbot.com/static/donate/tipper.js'
+    script.setAttribute('charset', 'utf-8')
+    script.setAttribute('async', 'async')
+    script.setAttribute('deferred', 'deferred')
+    document.querySelector('#app').appendChild(script)
   }
 }
 </script>
 
 <style lang="scss" scoped>
+  .donate {
+    margin-bottom: 15px;
+  }
 </style>

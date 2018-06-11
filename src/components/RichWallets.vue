@@ -59,6 +59,13 @@ export default {
     }).catch((e) => {
       console.log(e)
     })
+
+    let script = document.createElement('script')
+    script.src = 'https://www.xrptipbot.com/static/donate/tipper.js'
+    script.setAttribute('charset', 'utf-8')
+    script.setAttribute('async', 'async')
+    script.setAttribute('deferred', 'deferred')
+    document.querySelector('#app').appendChild(script)
   }
 }
 </script>
