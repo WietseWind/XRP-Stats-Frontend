@@ -6,6 +6,7 @@ import RichStats from '@/components/RichStats'
 import RichWallets from '@/components/RichWallets'
 import EscrowStats from '@/components/EscrowStats'
 import TxFlow from '@/components/TxFlow'
+import LiveLedgerTxs from '@/components/LiveLedgerTxs'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
           props: true
         }
       ]
+    },
+    {
+      path: '/live-ledger-txs',
+      name: 'LiveLedgerTxs',
+      component: LiveLedgerTxs
     },
     {
       path: '/rich-stats',
