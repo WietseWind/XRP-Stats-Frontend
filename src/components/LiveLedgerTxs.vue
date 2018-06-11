@@ -20,14 +20,14 @@
             <tr>
               <th width="60"></th>
               <th>Account</th>
-              <th class="text-center" width="60" v-for="t in Object.keys(types).sort()" v-bind:key="t"><code class="vertical">{{ t }}</code></th>
+              <th class="text-center" width="60" v-for="t in sortedTxTypes" v-bind:key="t"><code class="vertical">{{ t }}</code></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="x in sortedTxs" v-bind:key="x">
               <td class="text-right"><small class="text-muted">{{ txs[x].__count }}</small></td>
               <td><code class="text-primary"><b><a :href="'https://bithomp.com/explorer/' + x" target="_blank">{{ x }}</a></b></code></td>
-              <td class="text-center" v-for="t in Object.keys(types).sort()" v-bind:key="t">
+              <td class="text-center" v-for="t in sortedTxTypes" v-bind:key="t">
                 {{ txs[x][t] }}
               </td>
             </tr>
@@ -83,6 +83,13 @@ export default {
       return Object.keys(this.txs).sort(this.txSorter).filter(t => {
         return this.txs[t].__count >= this.minTxs
       })
+    },
+    sortedTxTypes () {
+      return Object.keys(this.types).filter(t => {
+        return this.types[t] >= this.minTxs
+      }).sort((a, b) => {
+        return (a > b) ? -1 : ((b > a) ? 1 : 0)
+      })
     }
   },
   watch: {
@@ -102,18 +109,19 @@ export default {
         }).then(t => {
           if (typeof t.response.ledger.transactions !== 'undefined' && t.response.ledger.transactions.length > 0) {
             t.response.ledger.transactions.forEach(x => {
-              this.$set(this.types, x.TransactionType, true)
+              if (typeof this.types[x.TransactionType] === 'undefined') {
+                this.$set(this.types, x.TransactionType, 0)
+              }
               if (typeof this.txs[x.Account] === 'undefined') {
                 this.$set(this.txs, x.Account, [])
                 this.$set(this.txs[x.Account], '__count', 0)
               }
-              this.txs[x.Account].__count++
-              if (this.txs[x.Account].__count >= this.minTxs) {
-                if (typeof this.txs[x.Account][x.TransactionType] === 'undefined') {
-                  this.$set(this.txs[x.Account], x.TransactionType, 0)
-                }
-                this.txs[x.Account][x.TransactionType]++
+              if (typeof this.txs[x.Account][x.TransactionType] === 'undefined') {
+                this.$set(this.txs[x.Account], x.TransactionType, 0)
               }
+              this.types[x.TransactionType]++
+              this.txs[x.Account][x.TransactionType]++
+              this.txs[x.Account].__count++
             })
           }
         }).catch(e => {})
