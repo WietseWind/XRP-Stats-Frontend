@@ -3,7 +3,7 @@
     <main role="main">
       <div class="d-md-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         <router-link tag="h5" class="my-0 mr-md-auto font-weight-normal logo" to="/">
-          XRP Stats
+          <span class="logo">x</span> XRP Stats
         </router-link>
         <nav class="d-inline-block my-2 my-md-0 mr-md-3">
           <router-link to="/rich-index" class="p-2 routerlink btn" active-class="btn btn-outline-primary">Richlist Index</router-link>
@@ -50,6 +50,17 @@ export default {
 </script>
 
 <style lang="scss">
+@font-face {
+  font-family: 'r1ppled';
+  src:  url('/static/xrp-font/r1ppled.eot');
+  src:  url('/static/xrp-font/r1ppled.eot#iefix') format('embedded-opentype'),
+    url('/static/xrp-font/r1ppled.ttf') format('truetype'),
+    url('/static/xrp-font/r1ppled.woff') format('woff'),
+    url('/static/xrp-font/r1ppled.svg#r1ppled') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
   font-size: 14px;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -115,15 +126,28 @@ body {
 }
 
 .logo {
-  background-image: url('assets/logo.png');
+  // background-image: url('assets/logo.png');
   background-repeat: no-repeat;
   background-position: top left;
   background-size: contain;
   padding: 10px;
-  padding-left: 55px;
+  padding-left: 43px;
   cursor: pointer;
+  span {
+    font-family: 'r1ppled';
+    font-size: 4em;
+    display: block;
+    position: absolute;
+    left: -25px;
+    top: -0.362em;
+  }
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    color: #2079F9;
+    span {
+      text-decoration: none;
+      color: #2079F9;
+    }
   }
 }
 </style>
