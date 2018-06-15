@@ -87,18 +87,43 @@
         </tfoot>
       </table>
 
-      <table v-if="location.hash === '#percentage'" class="table table-hover table-sm table-striped">
+      <table v-if="location.hash === '#percentage'" class="table table-hover table-sm">
         <thead class="thead-dark">
           <tr>
-            <th scope="col" class="text-right" width="120">&percnt; Accounts</th>
-            <th scope="col" class="text-right" width="300">Balance &gt;=</th>
+            <th scope="col" class="text-right" width="100">Accounts</th>
+            <th scope="col" class="text-right" width="200">Balance &gt;=</th>
+            <th scope="col" class="d-none d-md-table-cell text-right" width="150"></th>
+            <th scope="col" class="d-none d-sm-table-cell text-center">Trend</th>
+            <th scope="col" class="d-none d-md-table-cell text-left" width="150"></th>
             <th scope="col" class="text-right"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(v, k) in data.pct" v-bind:key="k">
             <th scope="row" class="text-right">{{ parseFloat(k.substring(3).replace('p', '.')).toLocaleString(undefined) }} &percnt;</th>
-            <td class="text-right text-primary"><b>{{ v.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> XRP</td>
+            <td class="text-right text-primary"><b>{{ v.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> <span class="d-none d-md-inline-block">XRP</span></td>
+            <td class="text-right d-none d-md-table-cell">
+              <div v-if="sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100].balanceEqGt">
+                <small class="text-muted">{{ sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100].date[0] }}<br />
+                <b>{{ sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100].balanceEqGt[0].toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> <span class="d-none d-md-inline-block">XRP</span></small>
+              </div>
+            </td>
+            <td class="text-center d-none d-sm-table-cell" width="280" style="padding: 0;">
+              <trend v-if="sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100]"
+                :data="sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100].balanceEqGt"
+                :gradient="['#6fa8dc', '#42b983', '#2c3e50']"
+                :width="250"
+                :height="50"
+                :stroke-width="2"
+                auto-draw smooth>
+              </trend>
+            </td>
+            <td class="text-left d-none d-md-table-cell">
+              <div v-if="sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100].balanceEqGt">
+                <small class="text-muted">{{ sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100].date.slice(-1)[0] }}<br />
+                <b>{{ sparkline[parseFloat(k.substring(3).replace('p', '.')) * 100].balanceEqGt.slice(-1)[0].toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> <span class="d-none d-md-inline-block">XRP</span></small>
+              </div>
+            </td>
             <td class="text-right"></td>
           </tr>
         </tbody>
@@ -118,11 +143,15 @@
 </template>
 
 <script>
+import Trend from 'vuetrend'
 const moment = require('moment')
 const timezone = require('moment-timezone')
 
 export default {
   name: 'RichStats',
+  components: {
+    Trend
+  },
   data () {
     return {
       data: {},
@@ -130,7 +159,8 @@ export default {
       top100AllXrp: false,
       location: {
         hash: '#range'
-      }
+      },
+      sparkline: {}
     }
   },
   computed: {
@@ -196,6 +226,13 @@ export default {
       }).reduce((a, b) => {
         return a + b
       }, 0)
+    }).catch((e) => {
+      console.log(e)
+    })
+    window.fetch('https://ledger.exposed/api/richlist-spark').then((r) => {
+      return r.json()
+    }).then((r) => {
+      this.sparkline = r
     }).catch((e) => {
       console.log(e)
     })

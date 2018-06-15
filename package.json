@@ -19,6 +19,7 @@
     "vue-google-charts": "0.0.3",
     "vue-localforage": "^0.2.5",
     "vue-router": "^3.0.1",
+    "vuetrend": "^0.3.2",
     "websocket": "^1.0.26"
   },
   "devDependencies": {
