@@ -30,11 +30,11 @@
       </div>
       <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
         <div class="progress" style="height: 25px;">
-          <div class="progress-bar text-center" role="progressbar" style="width: 0%; max-width: 92%; min-width: 8%;" :style="'width: ' + Math.ceil(results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.ceil(results.gt.percentage * 100) }}&percnt;&nbsp;&nbsp;</b></div>
+          <div class="progress-bar text-center tooltipx" role="progressbar" style="width: 0%; max-width: 92%; min-width: 8%;" :style="'width: ' + Math.ceil(results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.ceil(results.gt.percentage * 100) }}&percnt;&nbsp;&nbsp;</b><span class="tooltiptext" v-if="Math.ceil(results.gt.percentage * 100 <= 1)">{{ (results.gt.percentage * 100).toFixed(3) }}&percnt;</span></div>
           <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + Math.floor((1 - results.gt.percentage - results.lt.percentage) * 100) + '%'">
             <div id="progress-me"></div>
           </div>
-          <div class="progress-bar text-center bg-success" role="progressbar" style="width: 0%; max-width: 92%; min-width: 8%;" :style="'width: ' + Math.floor(results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.floor(results.lt.percentage * 100) }}&percnt;</b></div>
+          <div class="progress-bar text-center bg-success tooltipx" role="progressbar" style="width: 0%; max-width: 92%; min-width: 8%;" :style="'width: ' + Math.floor(results.lt.percentage * 100) + '%'"><b class="d-none d-sm-block">&nbsp;&nbsp;~{{ Math.floor(results.lt.percentage * 100) }}&percnt;</b><span class="tooltiptext" v-if="Math.ceil(results.lt.percentage * 100 <= 1)">{{ (results.lt.percentage * 100).toFixed(3) }}&percnt;</span></div>
         </div>
         <br />
         <h1>
@@ -246,4 +246,55 @@ export default {
       line-height: 2.9em;
     }
   }
+
+  /* Tooltip text */
+  /* Tooltip container */
+  .tooltipx {
+    cursor: default;
+  }
+
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    width: 90px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    // bottom: 125%;
+    // left: 50%;
+    margin-top: -37px;
+    margin-left: -10px;
+    font-size: 1.4em;
+    line-height: 1.4em;
+    font-weight: bold;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  /* Tooltip arrow */
+  .tooltipx .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+    opacity: 0.95;
+  }
+
 </style>
