@@ -42,6 +42,7 @@
           <span v-if="results.accounts.length < 1">{{ parseInt(results.query).toLocaleString(undefined) }} XRP is </span>
           <b>#{{ results.gt.count + 1 }}</b> 🎉
         </h1>
+        <b class="d-block d-sm-none" style="padding-bottom: 10px;">This means you are in the top ~{{ Math.ceil(results.gt.percentage * 100 * 100) / 100 }}&percnt;</b>
         There are <b>{{ results.gt.count }}</b> account(s) with <u>more</u> XRP<span v-if="results.eq.count > 1">,
           <b>{{ results.eq.count - 1 }}</b> account(s) with the <u>exact same</u> amount of XRP</span>
         and
@@ -240,7 +241,7 @@ export default {
       display: block;
       position: absolute;
       content: '😎';
-      margin-top: -1.25em;
+      margin-top: -1.18em;
       margin-left: -0.3em;
       font-size: 3.3em;
       line-height: 2.9em;
