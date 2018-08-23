@@ -8,7 +8,7 @@
 
     <div class="alert alert-primary text-center" v-if="top100 && data && data.totalCoins">
       <b>XRP owned by the top 100 accounts</b>
-      <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - <b>{{ (top100 / (top100AllXrp ? (data.totalCoins / 1000000) : noAccountsSum) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</b></span>
+      <span class="large">{{ top100.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }} XRP - <b id="top_percentage">{{ (top100 / (top100AllXrp ? (data.totalCoins / 1000000) : noAccountsSum) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} &percnt;</b></span>
       <b>Calculation:</b>
       <div v-if="top100AllXrp">
         <code>SUM(Non-escrowed XRP Top 100 accounts) / SUM(Existing XRP on ledger) * 100</code>
