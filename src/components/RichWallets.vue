@@ -17,17 +17,19 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col" class="text-right" width="1"></th>
-            <th scope="col" class="text-right" width="50%">Balance</th>
-            <th scope="col" class="text-left" width="50%">Account</th>
+            <th scope="col" class="text-right" width="30%">Balance</th>
+            <th scope="col" class="text-left" width="70%">Account</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(v, k) in data" v-bind:key="k">
             <td class="text-right"><small class="text-muted">{{ (parseInt(skip)||0) + 1 + k }}</small></td>
-            <td class="text-right text-primary"><b>{{ v.Balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> XRP</td>
+            <td class="text-right text-primary"><b>{{ v.Balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> <span class="d-none d-sm-inline-block">XRP</span></td>
             <th scope="row" class="text-left"><code class="text-black text-normal">
+              <code class="d-block d-md-none" v-if="accounts[v.Account]">{{ accounts[v.Account] }}</code>
               <router-link :to="'/tx-flow/' + v.Account" class="text-normal text-black underline d-none d-sm-inline-block">{{ v.Account }}</router-link>
               <a class="text-normal text-black underline d-inline-block d-sm-none" target="_blank">{{ v.Account }}</a>
+              <code class="d-none d-md-inline-block" v-if="accounts[v.Account]">{{ accounts[v.Account] }}</code>
             </code></th>
           </tr>
         </tbody>
@@ -44,18 +46,44 @@ export default {
   props: [ 'take', 'skip' ],
   data () {
     return {
-      data: {}
+      data: {},
+      accounts: {}
     }
   },
   computed: {
   },
   methods: {
+    getAccountName (account) {
+      this.$set(this.accounts, account, null)
+      if (typeof window.localStorage[account] !== 'undefined') {
+        this.$set(this.accounts, account, window.localStorage[account])
+      } else {
+        fetch('https://bithomp.com/api/v1/userinfo/' + account).then(r => {
+          return r.json()
+        }).then(r => {
+          if (typeof r.address !== 'undefined') {
+            let desc = typeof r.domain !== 'undefined' ? r.domain : r.name
+            this.$set(this.accounts, account, desc)
+            window.localStorage[account] = desc
+            // Exists
+            // r.name
+            // r.domain
+          } else {
+            window.localStorage[account] = ''
+            this.$set(this.accounts, account, '')
+          }
+        })
+      }
+    }
   },
   mounted () {
     window.fetch('https://ledger.exposed/api/wallet-toplist/' + this.take + '/' + this.skip).then((r) => {
       return r.json()
     }).then((r) => {
       this.data = r
+      r.forEach(d => {
+        this.getAccountName(d.Account)
+      })
     }).catch((e) => {
       console.log(e)
     })

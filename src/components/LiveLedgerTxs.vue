@@ -2,7 +2,7 @@
   <div class="hello">
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h1 class="display-4">Live XRPL Transactions</h1>
-      <p class="lead text-muted">Watch the most recent activity on the XRP ledger<br /><small><small class="text-primary">(Only accounts with &gt; 10 transactions are displayed)</small></small></p>
+      <p class="lead text-muted">Watch the most recent activity on the XRP ledger<br /><small><small class="text-primary">(Only accounts with &gt; {{ minTxs }} transactions are displayed)</small></small></p>
     </div>
 
     <div v-if="!poolReady">
@@ -26,7 +26,10 @@
           <tbody>
             <tr v-for="x in sortedTxs" v-bind:key="x">
               <td class="text-right"><small class="text-muted">{{ txs[x].__count }}</small></td>
-              <td><code class="text-primary"><b><a :href="'https://bithomp.com/explorer/' + x" target="_blank">{{ x }}</a></b></code></td>
+              <td>
+                <code class="text-primary"><b><a :href="'https://bithomp.com/explorer/' + x" target="_blank">{{ x }}</a></b></code>
+                <small><code>{{ accounts[x] }}</code></small>
+              </td>
               <td class="text-center" v-for="t in sortedTxTypes" v-bind:key="t">
                 {{ txs[x][t] }}
               </td>
@@ -51,15 +54,17 @@ export default {
       types: {},
       poolReady: false,
       gotTxs: false,
-      minTxs: 10
+      minTxs: 5,
+      accounts: {}
     }
   },
   mounted () {
     if (typeof window.RippledWsClientPoolLive === 'undefined') {
       let pool = new RippledWsClientPool({})
       pool.addServer('wss://s1.ripple.com')
-      pool.addServer('wss://kyte.peerisland.com')
-      pool.addServer('wss://rippled-dev.xrpayments.co')
+      pool.addServer('wss://rippled.xrptipbot.com')
+      // pool.addServer('wss://kyte.peerisland.com')
+      // pool.addServer('wss://rippled-dev.xrpayments.co')
       window.RippledWsClientPoolLive = pool
     } else {
       if (window.RippledWsClientPoolLive.getConnections().filter(c => {
@@ -95,6 +100,28 @@ export default {
   watch: {
   },
   methods: {
+    getAccountName (account) {
+      this.$set(this.accounts, account, null)
+      if (typeof window.localStorage[account] !== 'undefined') {
+        this.$set(this.accounts, account, window.localStorage[account])
+      } else {
+        fetch('https://bithomp.com/api/v1/userinfo/' + account).then(r => {
+          return r.json()
+        }).then(r => {
+          if (typeof r.address !== 'undefined') {
+            let desc = typeof r.domain !== 'undefined' ? r.domain : r.name
+            this.$set(this.accounts, account, desc)
+            window.localStorage[account] = desc
+            // Exists
+            // r.name
+            // r.domain
+          } else {
+            window.localStorage[account] = ''
+            this.$set(this.accounts, account, '')
+          }
+        })
+      }
+    },
     txSorter (a, b) {
       return (this.txs[a].__count > this.txs[b].__count) ? -1 : ((this.txs[b].__count > this.txs[a].__count) ? 1 : 0)
     },
@@ -113,6 +140,9 @@ export default {
                 this.$set(this.types, x.TransactionType, 0)
               }
               if (typeof this.txs[x.Account] === 'undefined') {
+                this.$set(this.accounts, x.Account, '')
+                this.getAccountName(x.Account)
+
                 this.$set(this.txs, x.Account, [])
                 this.$set(this.txs[x.Account], '__count', 0)
               }
