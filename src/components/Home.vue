@@ -3,6 +3,7 @@
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h1 class="display-4">XRP Stats</h1>
       <p class="lead">Because everything on the ledger is public information 🎉</p>
+      <p><small>... Or <a href="https://wietse.com/xrpl" target="_blank">check out some more XRPL projects</a>.</small></p>
     </div>
 
     <div class="card-deck mb-3 text-center">
