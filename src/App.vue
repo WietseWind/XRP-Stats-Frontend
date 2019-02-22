@@ -29,11 +29,14 @@
     <footer class="footer">
       <div class="container text-center">
         <small>
-          <span class="text-muted">By <a href="https://twitter.com/WietseWind" target="_blank">@WietseWind</a></span>
+          <span class="text-muted">
+            By <a href="https://twitter.com/WietseWind" target="_blank">@WietseWind</a> &bull;
+            <a href="https://wietse.com/xrpl" target="_blank"><b>More projects</b></a>
+          </span>
           &dash;
-          <span class="text-muted">Check the XRPTipBot: <a href="https://xrptipbot.com" target="_blank">xrptipbot.com</a></span>
+          <span class="text-muted">XRPTipBot: <a href="https://xrptipbot.com" target="_blank">xrptipbot.com</a></span>
           &dash;
-          Github:
+          Source:
           <span class="text-muted"><a href="https://github.com/WietseWind/XRP-Stats-Frontend" target="_blank">Frontend</a></span>
           &amp;
           <span class="text-muted"><a href="https://github.com/WietseWind/XRP-Ledger-to-MongoDB" target="_blank">Backend</a></span>
