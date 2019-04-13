@@ -57,7 +57,7 @@
         <tbody>
           <tr v-for="(l, lk) in top" v-bind:key="l.i">
             <th scope="row" class="text-right">
-              <router-link v-if="l.accounts < 999" :to="'/rich-stats/' + l.accounts + '/' + (lk > 0 ? top[lk - 1].accounts : 0)" class="">{{ l.accounts }}</router-link>
+              <router-link v-if="l.accounts < 999" :to="'/rich-stats/' + l.accounts + '/' + top.slice(0, lk).reduce((a,b) => { return a + b.accounts }, 0)" class="">{{ l.accounts }}</router-link>
               <span v-if="l.accounts >= 999">{{ l.accounts }}</span>
             </th>
             <td class="text-right">{{ l.from }} XRP</td>
