@@ -28,7 +28,14 @@
       <div class="alert alert-danger text-center" v-if="!requesting && results.gt && results.accounts.length > 0">
         Please don't flaunt your position as it makes you a possible target for people with ill intentions!
       </div>
-      <div v-if="!requesting && results.gt" class="alert alert-primary text-center">
+      <div v-if="!requesting && results.gt && isExchange" class="alert alert-warning mb-3">
+        <b>WARNING!</b> The account(s) listed below is/are likely <b>shared account(s)</b>, like an exchange or wallet service(s).
+        <div class="mt-3">Many individual owners of XRP hold their tokens at an exchange or wallet service. The account balance reflects the total held at the entire exchange / wallet service rather than individual's holdings.</div>
+        <ul class="list-unstyled pb-0 mb-0 mt-2">
+          <span v-for="e in this.exchangeList" v-bind:key="e"><code class="badge bg-warning text-dark">{{ e }}</code>&nbsp;</span>
+        </ul>
+      </div>
+      <div v-if="!requesting && results.gt" :class="{ exchange: isExchange }" class="alert alert-primary text-center">
         <div class="progress" style="height: 25px;">
           <div class="progress-bar text-center tooltipx" role="progressbar" style="width: 0%; max-width: 92%; min-width: 8%;" :style="'width: ' + Math.ceil(results.gt.percentage * 100) + '%'"><b class="d-none d-sm-block">~{{ Math.ceil(results.gt.percentage * 100) }}&percnt;&nbsp;&nbsp;</b><span class="tooltiptext" v-if="Math.ceil(results.gt.percentage * 100 <= 1)">{{ (results.gt.percentage * 100).toFixed(3) }}&percnt;</span></div>
           <div class="progress-bar text-center progress-overflow bg-warning" role="progressbar" style="width: 0%" :style="'width: ' + Math.floor((1 - results.gt.percentage - results.lt.percentage) * 100) + '%'">
@@ -95,6 +102,7 @@
 <script>
 import Vue from 'vue'
 import VueLocalForage from 'vue-localforage'
+import RippledWsClientPool from 'rippled-ws-client-pool'
 const moment = require('moment')
 const timezone = require('moment-timezone')
 
@@ -110,7 +118,27 @@ export default {
       results: {},
       error: '',
       progress: 0,
-      history: []
+      history: [],
+      accountDetails: {}
+    }
+  },
+  computed: {
+    accountAccountDetails () {
+      return Object.keys(this.accountDetails).filter(r => {
+        return this.account.trim().split(' ').indexOf(this.accountDetails[r].account) > -1
+      })
+    },
+    exchangeList () {
+      return this.accountAccountDetails.filter(r => {
+        return this.accountDetails[r].tagRequired
+      }).map(r => {
+        return this.accountDetails[r].account
+      })
+    },
+    isExchange () {
+      return this.accountAccountDetails.map(r => {
+        return this.accountDetails[r].tagRequired
+      }).indexOf(true) > -1
     }
   },
   mounted () {
@@ -149,6 +177,61 @@ export default {
     }
   },
   methods: {
+    connectPool () {
+      return new Promise((resolve, reject) => {
+        if (typeof window.RippledWs === 'undefined') {
+          let pool = new RippledWsClientPool({})
+          pool.addServer('wss://s1.ripple.com')
+          pool.addServer('wss://rippled-dev.xrpayments.co')
+          pool.addServer('wss://rippled.xrptipbot.com')
+          window.RippledWs = new Promise((resolve, reject) => {
+            pool.on('ledger', ledger => {
+              window.RippledWs = pool
+              resolve(window.RippledWs)
+            })
+          })
+        }
+        resolve(window.RippledWs)
+      })
+    },
+    getAccountFlags (account) {
+      return new Promise((resolve, reject) => {
+        this.connectPool().then(pool => {
+          pool.send({
+            command: 'account_info',
+            account: account
+          }).then(r => {
+            if (typeof r.response.account_data.Flags !== 'undefined') {
+              const accountRootFlags = {
+                PasswordSpent: 0x00010000, // password set fee is spent
+                RequireDestTag: 0x00020000, // require a DestinationTag for payments
+                RequireAuth: 0x00040000, // require authorization to hold IOUs
+                DepositAuth: 0x01000000, // require account to auth deposits
+                DisallowXRP: 0x00080000, // disallow sending XRP
+                DisableMaster: 0x00100000, // force regular key
+                NoFreeze: 0x00200000, // permanently disallowed freezing trustlines
+                GlobalFreeze: 0x00400000, // trustlines globally frozen
+                DefaultRipple: 0x00800000
+              }
+              Object.keys(accountRootFlags).forEach(f => {
+                if (r.response.account_data.Flags & accountRootFlags[f]) {
+                  if (f === 'RequireDestTag') {
+                    resolve({
+                      account: r.response.account_data.Account,
+                      tagRequired: true
+                    })
+                  }
+                }
+              })
+            }
+            resolve({
+              account: r.response.account_data.Account,
+              tagRequired: false
+            })
+          }).catch(reject)
+        })
+      })
+    },
     m (m) {
       var d = timezone(m)
       return d.tz(moment.tz.guess()).fromNow()
@@ -177,8 +260,14 @@ export default {
         }
       }, 200)
       if (this.account.trim().match(/^r[a-zA-Z0-9, ]{10,}$/) || this.account.trim().match(/^[0-9]+$/)) {
+        this.account.trim().split(' ').forEach(a => {
+          this.getAccountFlags(a).then(r => {
+            console.log('getAccountFlags', r)
+            this.accountDetails = Object.assign({}, { [r.account]: r, ...this.accountDetails })
+          })
+        })
         this.requesting = true
-        window.fetch('https://ledger.exposed/api/richlist-index/' + this.account).then((r) => {
+        window.fetch('https://ledger.exposed/api/richlist-index/' + this.account).then(r => {
           return r.json()
         }).then((r) => {
           // console.log(r)
@@ -216,6 +305,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .exchange { opacity: .5; }
   .donate {
     margin-top: 45px;
   }
