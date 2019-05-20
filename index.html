@@ -20,40 +20,14 @@
     <link href="/static/vendor/bootstrap/4.0.0/bootstrap.min.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/fetch-polyfill@0.8.2/fetch.min.js"></script>
-    <script src="https://polyfill.webmonetization.org/polyfill.js"></script>
-    <script src="https://cdn.coil.com/donate.js"></script>
-    <script>
-      var coilInit = false
-      function initCoil () {
-        window.WebMonetizationScripts.donate({
-          paymentPointer: '$twitter.xrptipbot.com/WietseWind',
-          noRetry: false,
-          noWidget: true
-        }).then(function (m) {
-          var total = 0
-          m.addEventListener("money", function (e) { 
-            var drops = parseFloat(e.detail.amount) / 1000
-            total += drops
-            // console.log(e.type, drops, total)
-          })
-        })
-      }
-      document.addEventListener("DOMContentLoaded", function() {
-        if (document.hasFocus()) {
-          initCoil()
-        } else {
-          window.onfocus = function () {
-            if (!coilInit) {
-              coilInit = true
-              initCoil()
-            }
-          }
-        }
-      })
-    </script>
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <script src="https://cdn.coil.com/counter.js"></script>
+    <script>
+      window.WebMonetizationScripts.createCounter()
+    </script>
   </body>
 </html>
