@@ -16,14 +16,14 @@
       <table class="table table-hover table-sm table-striped">
         <thead class="thead-dark">
           <tr>
-            <th scope="col" class="text-right" width="1"></th>
-            <th scope="col" class="text-right" width="30%">Balance</th>
-            <th scope="col" class="text-left" width="70%">Account</th>
+            <!-- <th scope="col" class="text-right" width="1"></th> -->
+            <th scope="col" class="text-right" width="20%">Balance</th>
+            <th scope="col" class="text-left" width="80%">Account</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(v, k) in data" v-bind:key="k">
-            <td class="text-right"><small class="text-muted">{{ (parseInt(skip)||0) + 1 + k }}</small></td>
+            <!-- <td class="text-right"><small class="text-muted">{{ (parseInt(skip)||0) + 1 + k }}</small></td> -->
             <td class="text-right text-primary"><b>{{ v.Balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</b> <span class="d-none d-sm-inline-block">XRP</span></td>
             <th scope="row" class="text-left"><code class="text-black text-normal">
               <code class="d-block d-md-none" v-if="accounts[v.Account]">{{ accounts[v.Account] }}</code>
