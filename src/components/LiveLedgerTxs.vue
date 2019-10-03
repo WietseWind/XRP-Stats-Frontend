@@ -105,7 +105,7 @@ export default {
       if (typeof window.localStorage[account] !== 'undefined') {
         this.$set(this.accounts, account, window.localStorage[account])
       } else {
-        fetch('https://bithomp.com/api/v1/userinfo/' + account).then(r => {
+        fetch('https://cached-bithomp-api.ledger.exposed/' + account).then(r => {
           return r.json()
         }).then(r => {
           if (typeof r.address !== 'undefined') {
